@@ -1,0 +1,222 @@
+/* Chat Container */
+.chat-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 30px auto;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+/* Messages area */
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+/* Message bubbles */
+.message {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-bubble {
+  align-self: flex-end;
+  padding: 10px 14px;
+  border-radius: 14px 14px 0 14px;
+  max-width: 70%;
+  white-space: pre-wrap;
+}
+
+.bot-bubble {
+  align-self: flex-start;
+  padding: 10px 14px;
+  border-radius: 14px 14px 14px 0;
+  max-width: 70%;
+  white-space: pre-wrap;
+}
+
+/* Folder/file clickable list */
+.results-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+.results-list li {
+  padding: 8px;
+  margin: 5px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background 0.2s, border 0.2s;
+}
+
+.results-list li:hover {
+  background: #dbeafe; /* softer hover for light mode */
+  text-decoration: none;
+}
+
+/* Input area */
+.chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: #f0f0f0; /* light input background */
+  border-radius: 0 0 12px 12px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 50px;
+  border: 1px solid #bbb;
+  outline: none;
+  background-color: #fff;
+}
+
+.chat-input button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  transition: background 0.2s;
+  background-color: #16a085; /* teal button */
+  color: white;
+}
+
+.chat-input button:hover {
+  background-color: #12876f;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 0 20px;
+}
+
+.theme-toggle h1 {
+  font-size: 20px;
+}
+
+.theme-toggle button {
+  border-radius: 50px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+  transition: background 0.2s;
+}
+
+/* Light Mode */
+.chat-container.light {
+  background-color: #f5f6fa; /* slightly cooler gray */
+  color: #333;
+}
+
+.chat-container.light .chat-messages {
+  background-color: #ffffff;
+}
+
+.chat-container.light .user-bubble {
+  background-color: #2d9cdb; /* brighter blue */
+  color: white;
+}
+
+.chat-container.light .bot-bubble {
+  background-color: #e3f2fd; /* soft blue-gray */
+  color: #333;
+}
+
+.chat-container.light .results-list li {
+  background: #f9fafb;
+  border: 1px solid #ccc;
+}
+
+.chat-container.light .results-list li:hover {
+  background: #dbeafe;
+}
+
+/* Dark Mode */
+.chat-container.dark {
+  background-color: #1c1c1c; /* slightly lighter black */
+  color: #e0e0e0;
+}
+
+.chat-container.dark .chat-messages {
+  background-color: #2b2b2b; /* soft dark gray */
+}
+
+.chat-container.dark .user-bubble {
+  background-color: #3b82f6; /* vivid blue */
+  color: white;
+}
+
+.chat-container.dark .bot-bubble {
+  background-color: #3a3a3a; /* darker gray */
+  color: #e0e0e0;
+}
+
+.chat-container.dark .results-list li {
+  background: #2e2e2e;
+  border: 1px solid #555;
+  color: #e0e0e0;
+}
+
+.chat-container.dark .results-list li:hover {
+  background: #3b3b3b;
+}
+
+.chat-container.dark .chat-input {
+  background-color: #2e2e2e;
+}
+
+.chat-container.dark .chat-input input {
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+.chat-container.dark .chat-input button {
+  background-color: #16a085; /* teal stays the same */
+  color: white;
+}
+
+.chat-container.dark .chat-input button:hover {
+  background-color: #12876f;
+}
+/* Download button style inside bot bubble */
+.bot-bubble a {
+  display: inline-block;
+  background-color: #007bff;   /* Blue background */
+  color: #fff;                /* White text */
+  padding: 8px 14px;
+  margin-top: 6px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.bot-bubble a:hover {
+  background-color: #0056b3;  /* Darker blue on hover */
+  transform: translateY(-2px);
+}
+
+.bot-bubble a:active {
+  background-color: #004080;  /* Even darker when clicked */
+  transform: translateY(0);
+}
