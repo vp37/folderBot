@@ -5,7 +5,7 @@ function FileExplorerChat() {
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([]);
   const [darkMode, setDarkMode] = useState(false);
-  const API_BASE = "http://192.168.40.46:8000/api";
+  const API_BASE = "http://127.0.0.1:8000/api";
 
   const messagesEndRef = useRef(null);
 
