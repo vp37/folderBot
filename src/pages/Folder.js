@@ -1,4 +1,5 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 function FileExplorerChat() {
@@ -8,8 +9,9 @@ function FileExplorerChat() {
   const API_BASE = "http://127.0.0.1:8000/api";
 
   const messagesEndRef = useRef(null);
+  const navigate = useNavigate(); // ✅ navigation hook
 
-   useEffect(() => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
@@ -137,9 +139,19 @@ function FileExplorerChat() {
 
   return (
     <div className={`chat-container ${darkMode ? "dark" : "light"}`}>
+      {/* Header */}
       <div className="theme-toggle">
+        {/* ✅ Button in top center to switch page */}
+        <button
+          className="switch-btn"
+          onClick={() => navigate("/")} // ✅ Navigate to Enbot page
+        >
+          Bot
+        </button>
+
         <h1>FileBot...🚀</h1>
-        <button onClick={toggleDarkMode}>{darkMode ? "🌞" : "🌙"}</button>
+
+        <button onClick={toggleDarkMode}>{darkMode ? "🌙" : "☀️"}</button>
       </div>
 
       <div className="chat-messages">
@@ -190,7 +202,7 @@ function FileExplorerChat() {
             )}
           </div>
         ))}
-            <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} />
       </div>
 
       <div className="chat-input">

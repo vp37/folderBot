@@ -1,0 +1,194 @@
+/* ===================== Base Styles ===================== */
+.App {
+  max-width: 500px;
+  margin: 40px auto;
+  height: 550px;
+  padding: 20px;
+  border-radius: 16px;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================== Light Mode ===================== */
+.App.light {
+  background: #f9f9f9;
+  color: #222;
+}
+
+.App.light .chat-window {
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* ===================== Dark Mode ===================== */
+.App.dark {
+  background: #121212;
+  color: #f5f5f5;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.App.dark .chat-window {
+  background: #1e1e1e;
+  border: 1px solid #333;
+}
+
+/* ===================== Header ===================== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.header button {
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.header button:hover {
+  background-color: #ccc;
+  transform: scale(1.1);
+}
+
+/* ===================== Chat Window ===================== */
+.chat-window {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ===================== Messages ===================== */
+
+.message-row {
+  display: flex;
+  /* max-width: 100%; */
+  margin: 5px 0;
+}
+
+.message-row.user {
+  justify-content: flex-end;
+}
+
+.message-row.bot {
+  justify-content: flex-start;
+}
+
+.message-text {
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 70%; 
+  word-wrap: break-word;
+}
+
+.message-row.user .message-text {
+  background: #4caf50;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.message-row.bot .message-text {
+  background: #555;
+  color: #fff;
+  border-bottom-left-radius: 4px;
+}
+
+/* ===================== Input Area ===================== */
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 0.95rem;
+  transition: border 0.3s;
+}
+
+.input-area input:focus {
+  border-color: #007bff;
+}
+
+.input-area button {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  font-weight: 500;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.input-area button:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+/* ===================== Bot Image ===================== */
+.chat-image {
+  width: 100%;
+  max-height: 200px;
+  margin: 15px 0;
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.chat-image img {
+  width: 260px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+/* ===================== Folder Button ===================== */
+.enbot-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+  transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+}
+
+.enbot-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
+  background: linear-gradient(135deg, #0056b3, #00aaff);
+}
+
+.enbot-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+}
