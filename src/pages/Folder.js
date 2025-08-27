@@ -9,13 +9,12 @@ function FileExplorerChat() {
   const API_BASE = "http://127.0.0.1:8000/api";
 
   const messagesEndRef = useRef(null);
-  const navigate = useNavigate(); // ✅ navigation hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Common prompts/responses
   const COMMON_RESPONSES = {
     "good morning": "Good morning! 🌞",
     hello: "Hello there! 👋",
@@ -37,19 +36,16 @@ function FileExplorerChat() {
     welcome: "You're welcome! 😄",
     ok: "👍 Got it!",
     yes: "✅ Yes!",
-    no: "❌ No!",
     help: "Sure! How can I assist you? 🤖",
   };
 
-  // Toggle dark mode
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
-  // Add message to chat
   const addMessage = (sender, text, type = "text", data = null) => {
     setMessages((prev) => [...prev, { sender, text, type, data }]);
   };
 
-  // Initial load: show top-level folders/files
+  // Load top-level folders/files on mount
   useEffect(() => {
     const loadRootNodes = async () => {
       try {
@@ -58,7 +54,7 @@ function FileExplorerChat() {
         if (data.items && data.items.length > 0) {
           addMessage("bot", `Top-level folders and files:`, "results", data.items);
         }
-      } catch (error) {
+      } catch {
         addMessage("bot", "Error loading root folders/files");
       }
     };
@@ -92,7 +88,7 @@ function FileExplorerChat() {
         setQuery("");
         return;
       }
-    } catch (err) {}
+    } catch {}
 
     // 3️⃣ Search files
     try {
@@ -103,10 +99,24 @@ function FileExplorerChat() {
       if (!data.results || data.results.length === 0) {
         addMessage("bot", `No files found for "${query}".`);
       } else {
-        addMessage("bot", `Search results for "${query}":`, "results", data.results);
+        // ✅ Highlight matched keywords in frontend
+        const keywords = query.split(" ").filter((w) => w.length > 1);
+        const highlightedResults = data.results.map((item) => {
+          if (item.matched_content) {
+            let content = item.matched_content;
+            keywords.forEach((kw) => {
+              const regex = new RegExp(kw, "gi");
+              content = content.replace(regex, (match) => `<mark>${match}</mark>`);
+            });
+            return { ...item, matched_content: content };
+          }
+          return item;
+        });
+
+        addMessage("bot", `Search results for "${query}":`, "results", highlightedResults);
       }
       setQuery("");
-    } catch (error) {
+    } catch {
       addMessage("bot", `Error searching for "${query}"`);
     }
   };
@@ -123,12 +133,11 @@ function FileExplorerChat() {
       }
 
       addMessage("bot", `Contents of "${path}":`, "results", data.items);
-    } catch (error) {
+    } catch {
       addMessage("bot", `Error opening folder "${path}"`);
     }
   };
 
-  // 🔹 Instead of embedding, we give download link
   const openFile = async (path) => {
     addMessage("user", `Open file: ${path}`);
     addMessage("bot", "Click below link to download/open file:", "download", {
@@ -141,27 +150,20 @@ function FileExplorerChat() {
     <div className={`chat-container ${darkMode ? "dark" : "light"}`}>
       {/* Header */}
       <div className="theme-toggle">
-        {/* ✅ Button in top center to switch page */}
-        <button
-          className="switch-btn"
-          onClick={() => navigate("/")} // ✅ Navigate to Enbot page
-        >
+        <button className="switch-btn" onClick={() => navigate("/")}>
           Bot
         </button>
-
         <h1>FileBot...🚀</h1>
-
         <button onClick={toggleDarkMode}>{darkMode ? "🌙" : "☀️"}</button>
       </div>
 
+      {/* Chat messages */}
       <div className="chat-messages">
         {messages.map((msg, idx) => (
           <div key={idx} className="message">
             {/* Text messages */}
             {msg.type === "text" && (
-              <div
-                className={msg.sender === "user" ? "user-bubble" : "bot-bubble"}
-              >
+              <div className={msg.sender === "user" ? "user-bubble" : "bot-bubble"}>
                 {msg.text}
               </div>
             )}
@@ -175,12 +177,18 @@ function FileExplorerChat() {
                     <li
                       key={item.path}
                       onClick={() =>
-                        item.type === "folder"
-                          ? openFolder(item.path)
-                          : openFile(item.path)
+                        item.type === "folder" ? openFolder(item.path) : openFile(item.path)
                       }
                     >
                       {item.type === "folder" ? "📂" : "📄"} {item.name}
+
+                      {/* Matched content */}
+                      {item.matched_content && (
+                        <div
+                          className="matched-content"
+                          dangerouslySetInnerHTML={{ __html: item.matched_content }}
+                        />
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -190,12 +198,7 @@ function FileExplorerChat() {
             {/* Download link */}
             {msg.type === "download" && (
               <div className="bot-bubble">
-                <a
-                  href={msg.data.url}
-                  download={msg.data.name}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={msg.data.url} download={msg.data.name} target="_blank" rel="noopener noreferrer">
                   📥 {msg.data.name}
                 </a>
               </div>
@@ -205,6 +208,7 @@ function FileExplorerChat() {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Input */}
       <div className="chat-input">
         <input
           type="text"

@@ -1,6 +1,6 @@
 /* Chat Container */
 .chat-container {
-  max-width: 500px;
+  max-width: 1500px;
   margin: 40px auto;
   height: 550px;
   padding: 20px;
@@ -257,4 +257,16 @@
 .switch-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+}
+.matched-content {
+  margin-top: 5px;
+  padding: 5px;
+  background-color:rgba(235, 168, 227, 0.832); /* light yellow */
+  border-radius: 4px;
+  font-size: 0.9em;
+  white-space: pre-wrap; /* keep line breaks */
+}
+mark {
+  background-color: yellow;
+  font-weight: bold;
 }
