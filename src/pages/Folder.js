@@ -147,7 +147,7 @@ function FileExplorerChat() {
   };
 
   return (
-    <div className={`chat-container ${darkMode ? "dark" : "light"}`}>
+    <div className={`chat-container ${darkMode ? "light" : "dark"}`}>
       {/* Header */}
       <div className="theme-toggle">
         <button className="switch-btn" onClick={() => navigate("/")}>
@@ -199,7 +199,7 @@ function FileExplorerChat() {
             {msg.type === "download" && (
               <div className="bot-bubble">
                 <a href={msg.data.url} download={msg.data.name} target="_blank" rel="noopener noreferrer">
-                  📥 {msg.data.name}
+                  ⬇️ {msg.data.name}
                 </a>
               </div>
             )}
