@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReactMarkdown from "react-markdown"; // ✅ Markdown rendering
 import botImage from "../images/egps3.jpg";
 import "../css/Enbot.css";
 
@@ -24,12 +25,20 @@ function App() {
     setIsTyping(true);
 
     try {
-      const res = await axios.post(`${BACKEND_URL}/bot/chat/`, { message: input });
-      setMessages([...newMessages, { sender: "bot", text: res.data.reply }]);
-      console.log(res.data);
+      const res = await axios.post(`${BACKEND_URL}/bot/chat/`, {
+        message: input,
+      });
+
+      setMessages([
+        ...newMessages,
+        { sender: "bot", text: res.data.reply || "..." },
+      ]);
     } catch (err) {
       console.error(err);
-      setMessages([...newMessages, { sender: "bot", text: "Error: Could not reach server." }]);
+      setMessages([
+        ...newMessages,
+        { sender: "bot", text: "⚠️ Error: Could not reach server." },
+      ]);
     } finally {
       setIsTyping(false);
     }
@@ -44,7 +53,9 @@ function App() {
     <div className={`App ${darkMode ? "light" : "dark"}`}>
       {/* Header */}
       <div className="header">
-        <button className="enbot-btn" onClick={() => navigate("/folder")}>FB</button>
+        <button className="enbot-btn" onClick={() => navigate("/folder")}>
+          FB
+        </button>
         <h2>Chatty...🤖(AI)</h2>
         <button onClick={() => setDarkMode(!darkMode)}>
           {darkMode ? "🌙" : "☀️"}
@@ -55,7 +66,10 @@ function App() {
       <div className="chat-window">
         {messages.map((msg, i) => (
           <div key={i} className={`message-row ${msg.sender}`}>
-            <div className="message-text">{msg.text}</div>
+            <div className="message-text">
+              {/* ✅ Render Markdown for AI & user messages */}
+              <ReactMarkdown>{msg.text}</ReactMarkdown>
+            </div>
           </div>
         ))}
 
@@ -88,6 +102,7 @@ function App() {
 }
 
 export default App;
+
 
 
 // import React, { useState, useRef, useEffect } from "react";
