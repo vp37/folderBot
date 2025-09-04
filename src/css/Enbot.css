@@ -2,7 +2,7 @@
 .App {
   max-width: 500px;
   margin: 40px auto;
-  height: 700px;
+  height: 600px;
   padding: 20px;
   border-radius: 16px;
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
