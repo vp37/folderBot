@@ -42,7 +42,6 @@ const Login = () => {
 
       toast.success("Login successful!");
       setTimeout(() => navigate("/bot"), 1000);
-      
     } catch (error) {
       console.error(error.response?.data);
       const errorMessage =

@@ -1,12 +1,11 @@
-import React from 'react';
+// layout/PrivateRoute.js
 import { Navigate, Outlet } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const PrivateRoute = () => {
-  const isAuthenticated = localStorage.getItem("token");
+  const token = useSelector(state => state.auth.token); // Or however you store it
 
-  return (
-    isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
-  );
+  return token ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

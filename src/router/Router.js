@@ -1,13 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Login from "../pages/Login"
-import Signup from "../pages/Signup"
-import PrivateRoute from "../layout/PrivateRoute"
-import Layout from "../layout/Layout"
-import Enbot from "../pages/Enbot"
-import Folder from "../pages/Folder"
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
+import PrivateRoute from "../layout/PrivateRoute";
+import Layout from "../layout/Layout";
+import Enbot from "../pages/Enbot";
+import Folder from "../pages/Folder";
 
-
-const Router = () => {  
+const Router = () => {
   const router = createBrowserRouter([
     {
       path: '/login',
@@ -19,19 +18,19 @@ const Router = () => {
     },
     {
       path: '/',
-      element: <PrivateRoute />,
+      element: <PrivateRoute />,   // Only authenticated users can access children
       children: [
         {
-          path: '/',
+          path: '/',              // This renders Layout as the main wrapper
           element: <Layout />,
           children: [
             {
-              path: 'bot',      
-              element: <Enbot />,
-            },
-             {
-              path: '/',      
+              path: '',          // Default page at `/` → Folder
               element: <Folder />,
+            },
+            {
+              path: 'bot',       // `/bot` route
+              element: <Enbot />,
             },
           ],
         },
