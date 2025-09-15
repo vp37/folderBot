@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../context/Themecontext"; // 🔹 use global theme
 import "../App.css";
 
 function FileExplorerChat() {
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([]);
-  const [darkMode, setDarkMode] = useState(false);
   const API_BASE = "http://127.0.0.1:8000/api";
 
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
+
+  // 🔹 Global theme context
+  const { darkMode, setDarkMode } = useTheme();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,8 +41,6 @@ function FileExplorerChat() {
     yes: "✅ Yes!",
     help: "Sure! How can I assist you? 🤖",
   };
-
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const addMessage = (sender, text, type = "text", data = null) => {
     setMessages((prev) => [...prev, { sender, text, type, data }]);
@@ -99,7 +100,7 @@ function FileExplorerChat() {
       if (!data.results || data.results.length === 0) {
         addMessage("bot", `No files found for "${query}".`);
       } else {
-        // ✅ Highlight matched keywords in frontend
+        // ✅ Highlight matched keywords
         const keywords = query.split(" ").filter((w) => w.length > 1);
         const highlightedResults = data.results.map((item) => {
           if (item.matched_content) {
@@ -147,15 +148,17 @@ function FileExplorerChat() {
   };
 
   return (
-    <div className={`chat-container ${darkMode ? "light" : "dark"}`}>
+    <div className={`chat-container ${darkMode ? "dark" : "light"}`}>
       {/* Header */}
-      <div className="theme-toggle">
+      {/* <div className="theme-toggle">
         <button className="switch-btn" onClick={() => navigate("/")}>
-          Bot
+          🤖 Bot
         </button>
         <h1>FileBot...🚀</h1>
-        <button onClick={toggleDarkMode}>{darkMode ? "🌙" : "☀️"}</button>
-      </div>
+        <button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+      </div> */}
 
       {/* Chat messages */}
       <div className="chat-messages">
@@ -181,8 +184,6 @@ function FileExplorerChat() {
                       }
                     >
                       {item.type === "folder" ? "📂" : "📄"} {item.name}
-
-                      {/* Matched content */}
                       {item.matched_content && (
                         <div
                           className="matched-content"
@@ -198,7 +199,12 @@ function FileExplorerChat() {
             {/* Download link */}
             {msg.type === "download" && (
               <div className="bot-bubble">
-                <a href={msg.data.url} download={msg.data.name} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={msg.data.url}
+                  download={msg.data.name}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   ⬇️ {msg.data.name}
                 </a>
               </div>

@@ -1,0 +1,14 @@
+.layoutContainer {
+  display: flex;
+  height: 100vh;
+  background-color: #f9fafb;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: black;
+  border-left: 1px solid #e5e7eb;
+}

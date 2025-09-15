@@ -1,14 +1,16 @@
 .chat-container {
-  max-width: 500px;
-  margin: 40px auto;
-  height: 550px;
-  padding: 20px;
-  border-radius: 16px;
+  width:1320px;
+  margin-left:212px;
+  height: 700px;
+  padding: 8px;
+  margin-top: 45px;
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  position: fixed;
+
 }
 .chat-container.light {
   background-color: #f5f6fa; /* slightly cooler gray */

@@ -1,0 +1,309 @@
+/* ================= Layout ================= */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ✅ WhatsApp Light Mode */
+.light {
+  --bg: #f0f2f5;          /* WhatsApp background */
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e5e7eb;
+  --text: #111;
+  --primary: #25d366;     /* WhatsApp green */
+  --secondary: #6b7280;
+}
+
+/* ✅ WhatsApp Dark Mode */
+.dark {
+  --bg: #111b21;          /* WhatsApp dark bg */
+  --sidebar-bg: #202c33;
+  --sidebar-border: #374151;
+  --text: #e9edef;
+  --primary: #25d366;     /* WhatsApp green */
+  --secondary: #9ca3af;
+}
+
+/* ================= Sidebar ================= */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: calc(100% - 60px);
+  width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text);
+  transition: transform 0.2s;
+}
+
+.toggle-btn:hover {
+  transform: rotate(90deg);
+}
+
+/* Sidebar top actions */
+.sidebar-top {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-chat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  color: #fff;
+  background: var(--primary);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.new-chat:hover {
+  background: #20ba59; /* darker WhatsApp green */
+  transform: translateY(-2px);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--sidebar-border);
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  color: var(--text);
+}
+
+/* Chats list */
+.sidebar-chats {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.chat-link {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.chat-link:hover {
+  background: var(--primary);
+  color: #fff !important;
+}
+
+/* Sidebar bottom (user) */
+.sidebar-bottom {
+  padding: 12px;
+  border-top: 1px solid var(--sidebar-border);
+}
+
+.user-email {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.05);
+  color: var(--secondary);
+  text-align: center;
+  word-break: break-word;
+}
+
+.dark .user-email {
+  background: rgba(255,255,255,0.1);
+  color: #f3f4f6;
+}
+
+/* ================= Top Navbar ================= */
+.top-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--sidebar-bg);
+  border-bottom: 1px solid var(--sidebar-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-btn {
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--sidebar-bg);
+  border: 1px solid var(--sidebar-border);
+  border-radius: 8px;
+  min-width: 180px;
+  top: 110%;
+  left: 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dropdown-content a {
+  padding: 10px 14px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  color: var(--text);
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Center switching buttons */
+.switching-options {
+  display: flex;
+  gap: 10px;
+}
+
+.switch-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  background: var(--sidebar-border);
+  color: var(--text);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.switch-btn:hover {
+  transform: translateY(-2px);
+}
+
+.switch-btn.active {
+  background: var(--primary);
+  color: #fff !important;
+}
+
+/* Right side buttons */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.mode-toggle {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text);
+  transition: transform 0.2s;
+}
+
+.mode-toggle:hover {
+  transform: rotate(20deg);
+}
+
+.login-btn, .signup-btn, .logout-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-btn {
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+}
+
+.login-btn:hover {
+  background: var(--text);
+  color: #fff;
+}
+
+.signup-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+}
+
+.signup-btn:hover {
+  background: #20ba59;
+}
+
+.logout-btn {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
