@@ -12,6 +12,7 @@
   background: #000; /* or your preferred background */
   transition: margin-left 0.3s ease;
   margin-left: -50px; /* default sidebar width */
+  margin-top: 60px;
 }
 
 /* When sidebar is collapsed, use this class */
