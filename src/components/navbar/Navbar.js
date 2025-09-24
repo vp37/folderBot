@@ -14,11 +14,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
 
+  // Check if user is logged in
   useEffect(() => {
     const token = Cookies.get("access_token");
     setIsLoggedIn(!!token);
   }, []);
 
+  // Logout handler
   const handleLogout = () => {
     Cookies.remove("access_token");
     setIsLoggedIn(false);
@@ -51,7 +53,7 @@ const Navbar = () => {
           <div className="sidebar-chats">
             <ul>
               <li>
-                <NavLink to="/bot" className="chat-link">Chat 1</NavLink>
+                <NavLink to="/Home" className="chat-link">Chat 1</NavLink>
               </li>
               <li>
                 <NavLink to="/chat" className="chat-link">Chat 2</NavLink>
@@ -62,14 +64,17 @@ const Navbar = () => {
 
         <div className="sidebar-bottom">
           {sidebarOpen && (
-            <div className="user-email">{isLoggedIn ? user?.email || "Logged in User" : "Guest"}</div>
+            <div className="user-email">
+              {isLoggedIn ? user?.email || "Logged in User" : "Guest"}
+            </div>
           )}
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="main-content">
-        <div className="top-navbar">
+      <div className={`main-content ${sidebarOpen ? "" : "collapsed"}`}>
+        <div className={`top-navbar ${sidebarOpen ? "" : "collapsed"}`}>
+          {/* Left dropdown */}
           <div className="navbar-left">
             <div className="dropdown">
               <button className="dropdown-btn">EGPS ▾</button>
@@ -80,17 +85,25 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Center switch buttons */}
           <div className="navbar-center">
             <div className="switching-options">
-              <NavLink to="/bot" className={({ isActive }) => `switch-btn ${isActive ? "active" : ""}`}>
+              <NavLink
+                to="/bot"
+                className={({ isActive }) => `switch-btn ${isActive ? "active" : ""}`}
+              >
                 Chatty...🤖(AI)
               </NavLink>
-              <NavLink to="/" className={({ isActive }) => `switch-btn ${isActive ? "active" : ""}`}>
+              <NavLink
+                to="/"
+                className={({ isActive }) => `switch-btn ${isActive ? "active" : ""}`}
+              >
                 FileBot
               </NavLink>
             </div>
           </div>
 
+          {/* Right buttons */}
           <div className="navbar-right">
             <button className="mode-toggle" onClick={() => setDarkMode(!darkMode)}>
               {darkMode ? <FaSun /> : <FaMoon />}
@@ -106,6 +119,8 @@ const Navbar = () => {
             )}
           </div>
         </div>
+
+        {/* Page content goes here */}
       </div>
     </div>
   );

@@ -1,16 +1,17 @@
 /* ===================== Base Styles ===================== */
 .App {
-  width:1320px;
-  margin-left:212px;
-  height: 700px;
+  width: calc(100% - 250px); /* dynamic width depending on sidebar */
+  height: 690px;
   padding: 8px;
-  margin-top: 45px;
+  margin-top: 50px;
   transition: background 0.3s, color 0.3s, box-shadow 0.3s;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   flex-direction: column;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   position: fixed;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 /* ===================== Light Mode ===================== */
@@ -33,44 +34,11 @@
 }
 
 .App.dark .chat-window {
-  background-image: url('../images/black.jpg'); /* correct way */
-  background-size: cover;        /* cover the whole container */
-  background-position: center;   /* center the image */
-  background-repeat: no-repeat;  /* don't repeat the image */
+  background-image: url('../images/black.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border: 1px solid #333;
-}
-
-
-/* ===================== Header ===================== */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-}
-
-.header button {
-  border: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  background-color: #e0e0e0;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.header button:hover {
-  background-color: #ccc;
-  transform: scale(1.1);
 }
 
 /* ===================== Chat Window ===================== */
@@ -78,7 +46,6 @@
   flex: 1;
   padding: 12px;
   overflow-y: auto;
-  /* border-radius: 12px; */
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -88,12 +55,10 @@
 .message-row {
   display: flex;
   margin: 5px 0;
-  margin-left: 30px;
 }
 
 .message-row.user {
   justify-content: flex-end;
-  margin-right: 30px;
 }
 
 .message-row.bot {
@@ -184,17 +149,20 @@
   margin-top: 10px;
 }
 
-.input-area input {
+.input-area textarea {
   flex: 1;
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid #ccc;
   outline: none;
   font-size: 0.95rem;
-  transition: border 0.3s;
+  line-height: 1.4rem;
+  max-height: 150px;
+  overflow-y: auto;
+  resize: none; /* prevent manual resize */
 }
 
-.input-area input:focus {
+.input-area textarea:focus {
   border-color: #007bff;
 }
 
@@ -214,31 +182,6 @@
   transform: scale(1.05);
 }
 
-/* ===================== Folder Button ===================== */
-.enbot-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
-  transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
-}
-
-.enbot-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 123, 255, 0.4);
-  background: linear-gradient(135deg, #0056b3, #00aaff);
-}
-
-.enbot-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
-}
-
 /* ===================== Typing Animation ===================== */
 .typing {
   display: flex;
@@ -254,18 +197,49 @@
   animation: blink 1.4s infinite both;
 }
 
-.typing span:nth-child(1) {
-  animation-delay: 0s;
-}
-.typing span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.typing span:nth-child(3) {
-  animation-delay: 0.4s;
-}
+.typing span:nth-child(1) { animation-delay: 0s; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
 
 @keyframes blink {
   0%, 80%, 100% { opacity: 0; }
   40% { opacity: 1; }
 }
 
+/* ===================== Responsive ===================== */
+@media screen and (max-width: 768px) {
+  .App {
+    width: 100%;
+    margin: 0;
+    height: 100vh;
+    padding: 6px;
+    box-shadow: none;
+    border-radius: 0;
+    position: relative;
+  }
+
+  .chat-window {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .message-text {
+    max-width: 85%;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+  }
+
+  .input-area textarea {
+    font-size: 0.85rem;
+  }
+
+  .input-area button {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+}
+
+/* ===================== Sidebar Collapsed ===================== */
+.App.sidebar-collapsed {
+  width: calc(100% - 70px); /* collapsed sidebar width */
+}

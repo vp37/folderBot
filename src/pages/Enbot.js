@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -11,18 +11,53 @@ import { useTheme } from "../context/Themecontext";
 import { useSelector } from "react-redux";
 import "../css/Enbot.css";
 
+// -------------------- Message Row (Memoized) --------------------
+const MessageRow = memo(({ sender, text }) => {
+  return (
+    <div className={`message-row ${sender}`}>
+      <div className="message-text">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            code({ inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              return !inline && match ? (
+                <SyntaxHighlighter
+                  style={oneDark}
+                  language={match[1]}
+                  PreTag="div"
+                  {...props}
+                >
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code className="inline-code" {...props}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
+          {text}
+        </ReactMarkdown>
+      </div>
+    </div>
+  );
+});
+
+// -------------------- Chat Component --------------------
 function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
+  const textareaRef = useRef(null);
   const navigate = useNavigate();
   const { darkMode } = useTheme();
 
   const BACKEND_URL =
     process.env.REACT_APP_BACKEND_URL || "http://127.0.0.1:8000";
 
-  // ------------------- Get token & userId -------------------
   const token = Cookies.get("access_token");
   const reduxUser = useSelector((state) => state.auth.user);
 
@@ -37,14 +72,12 @@ function App() {
     }
   }
 
-  // ------------------- Ensure user is logged in -------------------
+  // Ensure user is logged in
   useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
+    if (!token) navigate("/login");
   }, [navigate, token]);
 
-  // ------------------- Load chat history -------------------
+  // Load chat history
   useEffect(() => {
     const fetchMessages = async () => {
       if (!token || !userId) return;
@@ -67,12 +100,18 @@ function App() {
     fetchMessages();
   }, [token, userId, BACKEND_URL]);
 
-  // ------------------- Send message -------------------
-  const sendMessage = async () => {
+  // -------------------- Auto-resize helper --------------------
+  const autoResizeTextarea = (textarea) => {
+    textarea.style.height = "auto";
+    textarea.style.height = Math.min(textarea.scrollHeight, 150) + "px";
+  };
+
+  // -------------------- Send message --------------------
+  const sendMessage = useCallback(async () => {
     if (!input.trim()) return;
 
-    const newMessages = [...messages, { sender: "user", text: input }];
-    setMessages(newMessages);
+    const userMessage = { sender: "user", text: input };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsTyping(true);
 
@@ -88,59 +127,30 @@ function App() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      setMessages([
-        ...newMessages,
-        { sender: "bot", text: res.data.reply || "..." },
-      ]);
+      const botReply = { sender: "bot", text: res.data.reply || "..." };
+      setMessages((prev) => [...prev, botReply]);
     } catch (err) {
       console.error(err);
-      setMessages([
-        ...newMessages,
+      setMessages((prev) => [
+        ...prev,
         { sender: "bot", text: "⚠️ Error: Could not reach server." },
       ]);
     } finally {
       setIsTyping(false);
     }
-  };
+  }, [input, token, userId, BACKEND_URL, navigate]);
 
-  // ------------------- Auto scroll -------------------
+  // Auto scroll
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+  
 
-  // ------------------- Render -------------------
   return (
     <div className={`App ${darkMode ? "dark" : "light"}`}>
       <div className="chat-window">
         {messages.map((msg, i) => (
-          <div key={i} className={`message-row ${msg.sender}`}>
-            <div className="message-text">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  code({ inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        style={oneDark}
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className="inline-code" {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              >
-                {msg.text}
-              </ReactMarkdown>
-            </div>
-          </div>
+          <MessageRow key={i} sender={msg.sender} text={msg.text} />
         ))}
 
         {isTyping && (
@@ -157,11 +167,22 @@ function App() {
       </div>
 
       <div className="input-area">
-        <input
+        <textarea
+          ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          onChange={(e) => {
+            setInput(e.target.value);
+            autoResizeTextarea(e.target);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          }}
           placeholder="Type your message..."
+          rows={1}
+          style={{ resize: "none", overflowY: "auto" }}
         />
         <button onClick={sendMessage}>Send</button>
       </div>

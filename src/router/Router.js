@@ -5,6 +5,7 @@ import PrivateRoute from "../layout/PrivateRoute";
 import Layout from "../layout/Layout";
 import Enbot from "../pages/Enbot";
 import Folder from "../pages/Folder";
+import Home from "../pages/Home";
 import ForgetPassword from "../pages/ForgetPassword";
 
 const Router = () => {
@@ -23,19 +24,23 @@ const Router = () => {
     },
     {
       path: "/",
-      element: <PrivateRoute />, // Only authenticated users can access children
+      element: <PrivateRoute />,
       children: [
         {
-          path: "/", // This renders Layout as the main wrapper
+          path: "/",
           element: <Layout />,
           children: [
             {
-              path: "", // Default page at `/` → Folder
+              path: "", 
               element: <Folder />,
             },
             {
               path: "bot", // `/bot` route
               element: <Enbot />,
+            },
+            {
+              path: "home", // `/bot` route
+              element: <Home />,
             },
           ],
         },
